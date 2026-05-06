@@ -1,41 +1,38 @@
 pipeline {
     agent any
 
-    options {
-        skipDefaultCheckout(true)
-    }
-
     stages {
 
-        stage('Checkout') {
+        stage('Clone Repo') {
             steps {
-                git branch: 'main',
-                url: 'https://github.com/MeghanaDwasari/AutomationProject.git'
+                git branch: 'main', url: 'https://github.com/MeghanaDwasari/AutomationProject.git'
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Setup Python Env') {
             steps {
-                bat 'pip install -r requirements.txt'
+                bat '''
+                python -m venv venv
+                venv\\Scripts\\python -m pip install --upgrade pip
+                venv\\Scripts\\python -m pip install -r requirements.txt
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                bat 'python -m pytest -n 1 --alluredir=allure-results'
-            }
-        }
-
-        stage('Generate Allure Report') {
-            steps {
-                bat 'allure generate allure-results --clean -o allure-report'
+                bat '''
+                venv\\Scripts\\python -m pytest -n 2 ^
+                --html=report.html --self-contained-html ^
+                --alluredir=allure-results
+                '''
             }
         }
     }
 
     post {
         always {
-            archiveArtifacts artifacts: 'screenshots/*.png'
+            archiveArtifacts artifacts: 'report.html, allure-results/**', fingerprint: true
         }
     }
 }
