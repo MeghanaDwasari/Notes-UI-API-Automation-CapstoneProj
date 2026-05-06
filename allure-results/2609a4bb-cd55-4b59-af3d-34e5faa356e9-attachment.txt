@@ -1,0 +1,6 @@
+Title: capgemini
+Description: capgemini is a global leader consukting , technology, services and digital transformation company
+Category: Work
+Completed: False
+Created At: 2026-05-05T14:44:53.967Z
+Updated At: 2026-05-05T14:45:37.583Z
