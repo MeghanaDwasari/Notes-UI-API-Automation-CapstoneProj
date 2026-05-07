@@ -1,4 +1,3 @@
-import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -12,21 +11,16 @@ class LoginPage(BasePage):
     LOGIN_BTN = (By.XPATH, "//button[text()='Login']")
 
     def login(self, email, password):
-        wait = WebDriverWait(self.driver, 10)
+        wait = WebDriverWait(self.driver, 15)
 
-        
-        if "login" not in self.driver.current_url:
-            self.driver.get(self.driver.current_url.rstrip("/") + "/login")
+        # ALWAYS use stable URL
+        self.driver.get(self.base_url + "/login")
 
-        
-        wait.until(EC.presence_of_element_located(self.EMAIL))
+        wait.until(EC.visibility_of_element_located(self.EMAIL))
 
-        
         self.type(self.EMAIL, email)
         self.type(self.PASSWORD, password)
 
-        
         self.click(self.LOGIN_BTN)
 
-        
         wait.until(EC.url_contains("notes"))
