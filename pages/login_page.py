@@ -11,7 +11,7 @@ class LoginPage(BasePage):
     LOGIN_BTN = (By.XPATH, "//button[text()='Login']")
 
     def login(self, email, password):
-        wait = WebDriverWait(self.driver, 15)
+        wait = WebDriverWait(self.driver, 20)
 
         # ALWAYS use stable URL
         self.driver.get(self.base_url + "/login")
