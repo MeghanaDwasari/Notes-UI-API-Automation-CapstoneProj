@@ -1,50 +1,31 @@
-import allure
 import pytest
-from pathlib import Path
-from selenium.common.exceptions import WebDriverException
+import os
+from selenium import webdriver
 
-from fixtures.browser_fixture import driver
-from utils.screenshot import save_screenshot
+os.environ["SE_AVOID_STATS"] = "true"
 
 
-@pytest.hookimpl(hookwrapper=True, tryfirst=True)
-def pytest_runtest_makereport(item, call):
+@pytest.fixture
+def driver():
 
-    outcome = yield
-    report = outcome.get_result()
+    run_mode = os.getenv("RUN_MODE", "local")  # default = local
 
-    if report.when != "call" or report.passed:
-        return
+    if run_mode == "local":
+        driver = webdriver.Chrome()
 
-    driver = item.funcargs.get("driver")
+    elif run_mode == "grid":
+        options = webdriver.ChromeOptions()
 
-    if driver is None:
-        return
+        driver = webdriver.Remote(
+            command_executor="http://localhost:4444/wd/hub",
+            options=options
+        )
 
-    try:
-        # check browser still exists
-        driver.current_window_handle
+    else:
+        raise ValueError("Invalid RUN_MODE. Use 'local' or 'grid'")
 
-        report_dir = Path(item.config.rootpath)
-        screenshot_path = save_screenshot(driver, item.name, report_dir)
+    driver.maximize_window()
 
-        html_plugin = item.config.pluginmanager.getplugin("html")
+    yield driver
 
-        if html_plugin is not None:
-            extra = getattr(report, "extra", [])
-            extra.append(html_plugin.extras.image(str(screenshot_path)))
-            report.extra = extra
-
-        with open(screenshot_path, "rb") as image_file:
-            allure.attach(
-                image_file.read(),
-                name="failure_screenshot",
-                attachment_type=allure.attachment_type.PNG
-            )
-
-    except WebDriverException:
-        # browser already closed
-        pass
-
-    except Exception:
-        pass
+    driver.quit()

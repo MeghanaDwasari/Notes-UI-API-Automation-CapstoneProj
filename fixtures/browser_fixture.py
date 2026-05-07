@@ -1,9 +1,22 @@
-import pytest
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
-@pytest.fixture(scope="function")
-def driver():
-    driver = webdriver.Chrome()   # Selenium auto-manages driver
-    driver.maximize_window()
-    yield driver
-    driver.quit()
+
+def get_driver(env="local"):
+
+    options = Options()
+    options.add_argument("--start-maximized")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+
+    if env == "grid":
+        driver = webdriver.Remote(
+            command_executor="http://selenium-hub:4444/wd/hub",
+            options=options
+        )
+    else:
+        driver = webdriver.Chrome(options=options)
+
+    driver.implicitly_wait(20)
+    return driver

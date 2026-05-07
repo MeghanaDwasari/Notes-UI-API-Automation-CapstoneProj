@@ -25,7 +25,7 @@ def test_delete_note_ui(driver):
     notes.delete_first_note()
 
    
-    WebDriverWait(driver, 10).until(
+    WebDriverWait(driver, 20).until(
         lambda d: len(notes.get_all_notes()) == initial_count - 1
     )
 

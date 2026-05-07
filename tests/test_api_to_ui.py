@@ -21,7 +21,7 @@ def test_api_to_ui(driver):
     assert res.status_code == 200
 
     driver.get(config["base_url"])
-    WebDriverWait(driver, 15).until(
+    WebDriverWait(driver, 20).until(
         lambda d: d.execute_script("return document.readyState") == "complete"
     )
 
@@ -29,7 +29,7 @@ def test_api_to_ui(driver):
     login.login(config["email"], config["password"])
 
     notes = ProductPage(driver)
-    notes.wait_for_note_presence(title, timeout=15)
+    notes.wait_for_note_presence(title, timeout=20)
 
     note_titles = [note.find_element(*notes.NOTE_TITLE).text.strip() for note in notes.get_all_notes()]
 

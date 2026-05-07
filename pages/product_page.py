@@ -23,7 +23,7 @@ class ProductPage(BasePage):
     def create_note(self, title, desc):
         self.click(self.ADD_NOTE)
 
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 20).until(
             EC.visibility_of_element_located(self.TITLE)
         )
 
@@ -38,7 +38,7 @@ class ProductPage(BasePage):
     # GET NOTES
     # -----------------------------
     def get_all_notes(self):
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 20).until(
             EC.presence_of_all_elements_located(self.NOTES)
         )
         return self.driver.find_elements(*self.NOTES)
@@ -77,7 +77,7 @@ class ProductPage(BasePage):
         delete_btn = notes[index].find_element(*self.NOTE_DELETE)
         self.driver.execute_script("arguments[0].click();", delete_btn)
 
-        WebDriverWait(self.driver, 10).until(
+        WebDriverWait(self.driver, 20).until(
             EC.element_to_be_clickable(self.DELETE_CONFIRM)
         )
         self.click(self.DELETE_CONFIRM)

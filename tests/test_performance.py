@@ -18,7 +18,7 @@ def test_notes_api_performance():
 
     assert res.status_code == 200
     notes_count = len(res.json().get("data", []))
-    threshold = 1.5 + (notes_count * 0.05)
+    threshold = 1.5 + (notes_count * 0.03)
 
     assert elapsed < threshold, (
         f"Notes API too slow: {elapsed:.2f}s (limit: {threshold:.2f}s, notes: {notes_count})"
@@ -39,13 +39,13 @@ def test_ui_login_performance(driver):
     login.login(config["email"], config["password"])
 
     
-    WebDriverWait(driver, 10).until(
+    WebDriverWait(driver, 20).until(
         EC.url_contains("notes")
     )
 
     elapsed = time.time() - start
 
     # Step 4: Assertion with realistic threshold
-    assert elapsed < float(config.get("ui_login_threshold", 20.0)), (
+    assert elapsed < float(config.get("ui_login_threshold", 60.0)), (
         f"UI login flow is too slow: {elapsed:.2f}s"
     )

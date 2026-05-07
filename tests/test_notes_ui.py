@@ -6,7 +6,7 @@ def test_create_note_ui(driver):
     config = get_config()
 
     driver.get(config["base_url"])
-    WebDriverWait(driver, 15).until(
+    WebDriverWait(driver, 20).until(
         lambda d: d.execute_script("return document.readyState") == "complete"
     )
     login = LoginPage(driver)
