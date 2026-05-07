@@ -1,0 +1,2 @@
+LOGIN: {"success":true,"status":200,"message":"Login successful","data":{"id":"69f9ba9c81124e02985a68a4","name":"Meghana Dwasari","email":"meghanadwasari@gmail.com","token":"0e7fd6eaa4de4fb1aef95e33cde424b4c23f1bb2a4024d938ff9c0eab5b81066"}}
+CREATE NOTE: {"success":true,"status":200,"message":"Note successfully created","data":{"id":"69fb5ea681124e02985b6926","title":"API E2E 1778081446","description":"Created through API","category":"Home","completed":false,"created_at":"2026-05-06T15:30:46.260Z","updated_at":"2026-05-06T15:30:46.260Z","user_id":"69f9ba9c81124e02985a68a4"}}
